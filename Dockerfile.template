@@ -1,9 +1,10 @@
-FROM resin/%%RESIN_MACHINE_NAME%%-node:slim
+FROM alexellis2/node-armhf:6.9.2
 
 # Install wget and curl
-RUN apt-get update && apt-get install -y \
-  wget \
-  curl && rm -rf /var/lib/apt/lists/*
+RUN rm -rf /var/lib/apt/lists/* && \
+    apt-get update && apt-get install -y \
+    wget \
+    curl && rm -rf /var/lib/apt/lists/*
 
 # WTF is going on with httpredir from debian? removing it the dirty way
 RUN sed -i "s/httpredir.debian.org/`curl -s -D - http://httpredir.debian.org/demo/debian/ | awk '/^Link:/ { print $2 }' | sed -e 's@<http://\(.*\)/debian/>;@\1@g'`/" /etc/apt/sources.list
@@ -57,7 +58,8 @@ COPY "$SOURCEFOLDER/app/package.json" ./
 RUN JOBS=MAX npm i --production
 
 # Move app to filesystem
-COPY "$SOURCEFOLDER/app" ./
+COPY "$
+/app" ./
 
 # NPM rebuild node native modules after electron is installed.
 RUN ./node_modules/.bin/electron-rebuild
