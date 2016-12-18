@@ -1,4 +1,4 @@
-FROM alexellis2/node-armhf:6.9.2
+FROM alexellis2/nodejs-armhf:6.9.2
 
 # Install wget and curl
 RUN rm -rf /var/lib/apt/lists/* && \
@@ -58,8 +58,7 @@ COPY "$SOURCEFOLDER/app/package.json" ./
 RUN JOBS=MAX npm i --production
 
 # Move app to filesystem
-COPY "$
-/app" ./
+COPY "/app" ./
 
 # NPM rebuild node native modules after electron is installed.
 RUN ./node_modules/.bin/electron-rebuild
